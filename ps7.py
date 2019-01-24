@@ -43,17 +43,11 @@ class ParticleFilter(object):
                     - template_rect (dict): Template coordinates with x, y, width, and height values.
         """
 
-        self.num_particles = kwargs.get('num_particles')  # required by the autograder
-#        self.sigma_exp = kwargs.get('sigma_mse')  # required by the autograder
-        self.sigma_exp = kwargs.get('sigma_exp') # required by the autograder
+        self.num_particles = kwargs.get('num_particles')   
+        self.sigma_exp = kwargs.get('sigma_exp')  
 
-        self.sigma_dyn = kwargs.get('sigma_dyn')  # required by the autograder
-        self.template_rect = kwargs.get('template_coords')  # required by the autograder
-        # If you want to add more parameters, make sure you set a default value so that
-        # your test doesn't fail the autograder because of an unknown or None value.
-        #
-        # The way to do it is:
-        # self.some_parameter_name = kwargs.get('parameter_name', default_value)
+        self.sigma_dyn = kwargs.get('sigma_dyn')  
+        self.template_rect = kwargs.get('template_coords')  
 
         self.template = template
         self.frame = frame
@@ -62,27 +56,10 @@ class ParticleFilter(object):
                                            ,uniform(template.shape[1]/2, frame.shape[1]-template.shape[1]/2, size=self.num_particles)#.reshape((self.num_particles, 1)) 
                                           )
                                           ) 
-#        particles = np.column_stack( (uniform(template.shape[0]/2, frame.shape[0]-template.shape[0]/2, size=num_particles) #.reshape((num_particles, 1)) 
-#                                           ,uniform(template.shape[1]/2, frame.shape[1]-template.shape[1]/2, size=num_particles)#.reshape((num_particles, 1)) 
-#                                          )
-#                                         ) 
-#        particles = np.column_stack( (np.random.randint(template.shape[0]/2, frame.shape[0]-template.shape[0]/2, size=self.num_particles) 
-#                                    , np.random.randint(template.shape[1]/2, frame.shape[1]-template.shape[1]/2, size=self.num_particles) 
-#                                    ))  
-#        
-#        particles = np.column_stack( (np.random.randint(template.shape[0]/2, frame.shape[0]-template.shape[0]/2, size=num_particles) 
-#                                    , np.random.randint(template.shape[1]/2, frame.shape[1]-template.shape[1]/2, size=num_particles) 
-#                                    ))  
-#                                          
-#                                          
-#        weights =   np.ones( num_particles) / num_particles
 
         # Todo: Initialize your weights array. Read the docstring.
-        self.weights =   np.ones(self.num_particles) /self.num_particles
-        # Initialize any other components you may need when designing your filter.
-
-
-
+        self.weights = np.ones(self.num_particles) /self.num_particles
+        
     def get_particles(self):
         """Returns the current particles state.
 
@@ -105,175 +82,38 @@ class ParticleFilter(object):
         """
 
         return self.weights
-    
-    
-#         particles = np.column_stack( (uniform(template.shape[0]/2, frame.shape[0]-template.shape[0]/2, size=num_particles) #.reshape((num_particles, 1)) 
-#                                                   ,uniform(template.shape[1]/2, frame.shape[1]-template.shape[1]/2, size=num_particles)#.reshape((num_particles, 1)) 
-#                                                  )
-#                                                 ) 
-#         weights =   np.ones( num_particles) / num_particles
 
    
     def predict(self,particles, sigma_dyn, frame, template):
         newP =  particles + randn(len(particles),2)*sigma_dyn 
          
         newP[newP[:,0] > frame.shape[0]-template.shape[0]/2-1, 0] = frame.shape[0]-template.shape[0]/2-1
-#        print newP[newP[:,0] > frame.shape[0]-template.shape[0]/2 , 0] 
         newP[newP[:,0] < template.shape[0]/2+1, 0]  = template.shape[0]/2
-#        print newP[newP[:,0] > frame.shape[0]-template.shape[0]/2 , 0] 
         newP[newP[:,1] > frame.shape[1]-template.shape[1]/2-1, 1]  = frame.shape[1]-template.shape[1]/2-1
-#        print newP[newP[:,0] > frame.shape[0]-template.shape[0]/2 , 0] 
         newP[newP[:,1] < template.shape[1]/2+1, 1]  = template.shape[1]/2+1
-#        print newP[newP[:,0] > frame.shape[0]-template.shape[0]/2 , 0] 
-
-#(newP[newP[:,0] > frame.shape[0]-template.shape[0]/2, 0]
-#,newP[newP[:,0] < template.shape[0]/2, 0]
-#, newP[newP[:,1] > frame.shape[1]-template.shape[1]/2, 1]
-#, newP[newP[:,1] < template.shape[1]/2, 1])
-#max(newP[:,0])
         self.particles =  newP
  
-                      
-#                      
-#                      
     def update(self,particles, weights, frame, sigma_exp, template):
-#        distance = []
-#        frame_grey = cv2.cvtColor(frame.astype(np.uint8), cv2.COLOR_BGR2GRAY ).astype(float) 
-#        template_grey = cv2.cvtColor(template.astype(np.uint8), cv2.COLOR_BGR2GRAY ).astype(float)
-#        
-#        
-#        for k in range(len(particles)):
-#            lx = int( particles[k,0]-template.shape[0]/2)
-#            ux = int( particles[k,0]-template.shape[0]/2)+ template.shape[0]  
-#            ly = int( particles[k,1]-template.shape[1]/2)
-#            uy = int( particles[k,1]-template.shape[1]/2)+ template.shape[1] 
-#            pf = frame_grey[ lx:ux
-#                            ,ly:uy    ]
-#            distance.append( np.linalg.norm( pf  - template_grey )  )  #np.sqrt(np.sum((pf  - template_grey) **2))  
-#
-#        p = np.exp(-np.array(distance)/2.0/(sigma_exp**2))+1.e-300
-#        print 'min dist', particles[ np.argmax(p/sum(p) ),:], distance[np.argmax(p/sum(p) )]
-#        self.weights = p/sum(p) 
-
-
-
-
-#        distance = []
-#        frame_green =frame[:,:,1].astype(float) 
-#        template_green = template[:,:,1].astype(float)
-#        for k in range(len(particles)):
-#            lx = int( particles[k,0]-template.shape[0]/2)
-#            ux = int( particles[k,0]-template.shape[0]/2)+ template.shape[0]  
-#            ly = int( particles[k,1]-template.shape[1]/2)
-#            uy = int( particles[k,1]-template.shape[1]/2)+ template.shape[1] 
-#            pf = frame_green[ lx:ux
-#                            ,ly:uy    ]
-#            mse = np.linalg.norm( pf  - template_green )
-##            sc1 = int(template.shape[1]/10*np.random.rand())+1
-##            sc2 =  template.shape[1]-sc1 
-##            msec = np.linalg.norm( pf[:,sc1]  - pf[:,sc2] )
-##            if msec<5.:
-##                mse +=10000000
-##                print k
-#            distance.append(mse  )  #np.sqrt(np.sum((pf  - template_grey) **2))  
-#
-#        p = np.exp(-np.array(distance)/2.0/(sigma_exp**2))+1.e-300
-#        print 'min dist', particles[ np.argmax(p/sum(p) ),:], distance[np.argmax(p/sum(p) )]
-#        self.weights = p/sum(p) 
-
-
-
-
-
         distance = []
-#        frame_green =frame[:,:,1].astype(float) 
-#        template_green = template[:,:,1].astype(float)
         for k in range(len(particles)):
             lx = int( particles[k,0]-template.shape[0]/2)
             ux = int( particles[k,0]-template.shape[0]/2)+ template.shape[0]  
             ly = int( particles[k,1]-template.shape[1]/2)
             uy = int( particles[k,1]-template.shape[1]/2)+ template.shape[1] 
-#            pf = frame_green[ lx:ux,ly:uy    ]
             mse = (np.linalg.norm(frame[lx:ux,ly:uy,1].astype(float) - template[:,:,1].astype(float) )
                         +np.linalg.norm(frame[lx:ux,ly:uy,0].astype(float) - template[:,:,0].astype(float) )
                         +np.linalg.norm(frame[lx:ux,ly:uy,2].astype(float) - template[:,:,2].astype(float) )
                         )
-#            sc1 = int(template.shape[1]/10*np.random.rand())+1
-#            sc2 =  template.shape[1]-sc1 
-#            msec = np.linalg.norm( pf[:,sc1]  - pf[:,sc2] )
-#            if msec<5.:
-#                mse +=10000000
-#                print k
             distance.append(mse  )  #np.sqrt(np.sum((pf  - template_grey) **2))  
 
         p = np.exp(-np.array(distance)/2.0/(sigma_exp*2))   #+1.e-300
-#        print 'min dist', particles[ np.argmax(p/sum(p) ),:], distance[np.argmax(p/sum(p) )]
         self.weights = p/sum(p) 
-
-
-
-#
-##        
-#        k = np.argmin(distance)  #np.argmax(p/sum(p))
-#        print k
-#        lx = int( particles[k,0]-template.shape[0]/2)
-#        ux = int( particles[k,0]-template.shape[0]/2+ template.shape[0])  
-#        ly = int( particles[k,1]-template.shape[1]/2)
-#        uy = int( particles[k,1]-template.shape[1]/2+ template.shape[1])
-#        pf = frame_green[ lx:ux,ly:uy    ]
-#        plt.imshow(pf)
-#        plt.imshow(frame)
-#        plt.imshow(template_grey)
-#        print 'dist', np.linalg.norm( pf  - template_grey )  # 4291.93126692
-#        
-#        
-#        
-#        particles[20,:] = [250,380] 
-#         
-#        
-#        
-#        k=20 
-#        lx = int( particles[k,0]-template.shape[0]/2)
-#        ux = int( particles[k,0]-template.shape[0]/2+ template.shape[0])  
-#        ly = int( particles[k,1]-template.shape[1]/2)
-#        uy = int( particles[k,1]-template.shape[1]/2+ template.shape[1])
-#        pf = frame_grey[ lx:ux,ly:uy    ]
-#        plt.imshow(pf)
-#        print 'dist', np.linalg.norm( pf  - template_grey )  # 5261.91039452
-#        
-#        
-#        
-#        
-#        im = np.zeros((720, 1280))
-#        for k in range(len(particles)):
-#            im[int(particles[k,0]),int(particles[k,1]) ] = (1./distance[k])/max( np.ones(1001)/distance )*255.
-#        plt.imshow(im)
-#        max(particles[:,0])
-#        
-#        # resample
-#        s = np.random.choice(num_particles,num_particles,replace=True,p=weights)
-#        particles = particles[s,]
-#        weights = weights[s,]
-#        
-#        #predict
-#        newP =  particles + randn(len(particles),2)*sigma_dyn 
-#         
-#        newP[newP[:,0] > frame.shape[0]-template.shape[0]/2, 0] = frame.shape[0]-template.shape[0]/2
-#        newP[newP[:,0] < template.shape[0]/2, 0] = template.shape[0]/2
-#        newP[newP[:,1] > frame.shape[1]-template.shape[1]/2, 1] = frame.shape[1]-template.shape[1]/2
-#        newP[newP[:,1] < template.shape[1]/2, 1] = template.shape[1]/2
-#        particles =  newP
-        
         
     def resample( self):
         s = np.random.choice(self.num_particles,self.num_particles,replace=True,p=self.weights)
         self.particles = self.particles[s,]
         self.weights = self.weights[s,]/sum(self.weights[s,])
         
-#        s = np.random.choice(num_particles,num_particles,replace=True,p=weights)
-#        particles = particles[s,]
-#        weights =  weights[s,]/sum( weights[s,])
-         
 
     def process(self, frame):
         """Processes a video frame (image) and updates the filter's state.
@@ -320,13 +160,6 @@ class ParticleFilter(object):
         Args:
             frame_in (numpy.array): copy of frame to render the state of the particle filter.
         """
-       
-#        frame_in = frame.copy()
-
-#        particles = self.particles
-#        weights = self.weights
-#        template = self.template
-#        
 
         u_weighted_mean = 0
         v_weighted_mean = 0
@@ -338,7 +171,6 @@ class ParticleFilter(object):
         for j in range( len(self.particles)):
             cv2.circle(frame_in, (int(self.particles[j, 1]), int(self.particles[j, 0]) ), 1, (0, 255, 0),  -1)
             d.append(np.linalg.norm(  self.particles[j, :]- np.array([u_weighted_mean,v_weighted_mean]) ) *  self.weights[j])  #find the distance of every particle to the weighted mean
-
 
 #        'Draw the rectangle of the tracking window associated with the Bayesian estimate for
 #          the current location which is simply the weighted mean of the (u, v) of the self.particles.  '''
@@ -352,10 +184,6 @@ class ParticleFilter(object):
                        ,  (int(v_weighted_mean), int(u_weighted_mean) )
                        , int(sum(d))
                        , (0,0,255), 1)
-         
-
-
-
 
 class AppearanceModelPF(ParticleFilter):
     """A variation of particle filter tracker that updates its appearance model over time."""
@@ -371,12 +199,7 @@ class AppearanceModelPF(ParticleFilter):
         super(AppearanceModelPF, self).__init__(frame, template, **kwargs)  # call base class constructor
 
         self.alpha = kwargs.get('alpha')  # required by the autograder
-        # If you want to add more parameters, make sure you set a default value so that
-        # your test doesn't fail the autograder because of an unknown or None value.
-        #
-        # The way to do it is:
-        # self.some_parameter_name = kwargs.get('parameter_name', default_value)
-
+        
     def process(self, frame):
         """Processes a video frame (image) and updates the filter's state.
 
@@ -397,41 +220,6 @@ class AppearanceModelPF(ParticleFilter):
                              ,(int(temp_center[1])-self.template.shape[1]/2) : (int(temp_center[1])-self.template.shape[1]/2+self.template.shape[1])]
         
         self.template = self.alpha*temp_template + (1-self.alpha) *self.template
-#        
-#        temp_center = particles[np.argmax(weights ), :]
-#        temp_template = frame[(int(temp_center[0])-template.shape[0]/2) : (int(temp_center[0])-template.shape[0]/2+template.shape[0])
-#                        ,(int(temp_center[1])-template.shape[1]/2) : (int(temp_center[1])-template.shape[1]/2+template.shape[1])]
-#        
-#        plt.imshow(temp_template)
-#        plt.imshow( template)
-#        alpha = .8
-#        plt.imshow(alpha*temp_template + (1-alpha) *template)
-        
-        
-        
-#         RENDER METHOD
-#        u_weighted_mean = 0
-#        v_weighted_mean = 0
-#        for i in range(len(self.particles)):
-#            u_weighted_mean +=  self.particles[i, 0] *  self.weights[i]
-#            v_weighted_mean +=  self.particles[i, 1] *  self.weights[i]
-#        self.template = frame[(int(u_weighted_mean)-self.template.shape[0]/2) : (int(u_weighted_mean)-self.template.shape[0]/2+self.template.shape[0])
-#                                ,(int(v_weighted_mean)-self.template.shape[1]/2) : (int(v_weighted_mean)-self.template.shape[1]/2+self.template.shape[1])
-#                                ]
-#    
-#        temp_template = frame[(x0-template.shape[0]/2) : (x0-template.shape[0]/2+template.shape[0])
-#                             ,(y0-template.shape[1]/2) : (y0-template.shape[1]/2+template.shape[1])]
-
-#cv2.circle is (col,row)
-#u=y=row, v=x=col
-#when working with particles
-#when drawing, flip it
-#so the way I use when getting coordinates from particle is cy,cx = particles[i]
-#from then on, I calculate other coordinates, say x1,y1, x2,y2...
-#for drawing, just use x,y as calculated
-#hope that makes sense
-
-         
         self.resample()
 
 
@@ -488,21 +276,7 @@ class MeanShiftLitePF(ParticleFilter):
             distance.append(np.sum(d))
             
         p = np.exp(-np.array(distance)/2.0/(sigma_exp**2)) 
-#        print 'min dist', particles[ int(np.argmax(np.sum(d))),:], distance[int(np.sum(d))]
         self.weights = p/sum(p) 
-        
-#        k = np.argmin(distance)  #np.argmax(p/sum(p))
-#        print k
-#        lx = int( particles[k,0]-template.shape[0]/2)
-#        ux = int( particles[k,0]-template.shape[0]/2+ template.shape[0])  
-#        ly = int( particles[k,1]-template.shape[1]/2)
-#        uy = int( particles[k,1]-template.shape[1]/2+ template.shape[1])
-#        pf = frame_green[ lx:ux,ly:uy    ]
-#        plt.imshow(pf)
-#        plt.imshow(frame)
-#        plt.imshow(template_grey)
-#        print 'dist', np.linalg.norm( pf  - template_grey )  # 4291.93126692
-#        
         
     def process(self, frame):
         """Processes a video frame (image) and updates the filter's state.
@@ -532,13 +306,7 @@ class MDParticleFilter(ParticleFilter):
         By calling super(...) all the elements used in ParticleFilter will be inherited so you
         don't have to declare them again.
         """
-
-        super(MDParticleFilter, self).__init__(frame, template, **kwargs)  # call base class constructor
-        # If you want to add more parameters, make sure you set a default value so that
-        # your test doesn't fail the autograder because of an unknown or None value.
-        #
-        # The way to do it is:
-        # self.some_parameter_name = kwargs.get('parameter_name', default_value)
+        super(MDParticleFilter, self).__init__(frame, template, **kwargs) 
 
     def process(self, frame):
         """Processes a video frame (image) and updates the filter's state.
