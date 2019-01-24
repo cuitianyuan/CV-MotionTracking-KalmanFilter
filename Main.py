@@ -17,50 +17,6 @@ video_filename = os.path.join(input_dir, "pres_debate.mp4")
 video = cv2.VideoCapture(video_filename)
 
 
-#okay, frame = video.read()
-
-
-
-
-#
-## my debug- 2a
-#num_particles = 5000  # Define the number of particles
-#sigma_exp = 10.  # Define the value of sigma for the measurement exponential equation
-#sigma_dyn = 30.  # Define the value of sigma for the particles movement (dynamics)
-#alpha = 0.90  # Set a value for alpha
-#
-#template_rect = {'x': 540.8751, 'y': 390.1776, 'w': 60.5404, 'h': 90.0504}
-#template_rect = {'x': 550.8751, 'y': 400.1776, 'w': 50.5404, 'h': 80.0504}  # Define the template window values
-#template_rect = {'x': 555.8751, 'y': 400.1776, 'w': 40.5404, 'h': 80.0504}  # suggested template window (dict)
-#
-#
-#template = frame[int(template_rect['y']):int(template_rect['y'] + template_rect['h']),
-#                                 int(template_rect['x']):int(template_rect['x'] + template_rect['w'])]
-#
-#
-#
-#(pf_class, video_filename, template_rect, save_frames) = (AppearanceModelPF,  # particle filter model class
-#                        os.path.join(input_dir, "pres_debate.mp4"),  # input video
-#                        template_rect,
-#                        {
-#                            'template': os.path.join(output_dir, 'ps7-2-a-1.png'),
-#                            22: os.path.join(output_dir, 'ps7-2-a-2.png'),
-#                            50: os.path.join(output_dir, 'ps7-2-a-3.png'),
-#                            160: os.path.join(output_dir, 'ps7-2-a-4.png')
-#                        })
-#pf = pf_class(frame, template, num_particles=num_particles, sigma_exp=sigma_exp, sigma_dyn=sigma_dyn, alpha=alpha,
-#                        template_coords=template_rect)
-#pf.process(frame) 
-#plt.imshow(pf.template)
-#
-#
-#
-
-
-
-
-
-
 
 # Driver/helper code
 def run_particle_filter(pf_class, video_filename, template_rect, save_frames={}, **kwargs):
@@ -130,43 +86,6 @@ def run_particle_filter(pf_class, video_filename, template_rect, save_frames={},
             break
 
 
-
-
-#
-#num_particles = 1000  # Define the number of particles
-#sigma_exp = 10.  # Define the value of sigma for the measurement exponential equation
-#sigma_dyn = 10.  # Define the value of sigma for the particles movement (dynamics)
-#alpha = 0  # Set a value for alpha
-#  # Define the template window valuesrun_particle_filter(AppearanceModelPF,  # particle filter model class
-#                        os.path.join(input_dir, "pres_debate.mp4"),  # input video
-#                        template_rect,
-#                        {
-#                            'template': os.path.join(output_dir, 'ps7-2-a-1.png'),
-#                            22: os.path.join(output_dir, 'ps7-2-a-2.png'),
-#                            50: os.path.join(output_dir, 'ps7-2-a-3.png'),
-#                            160: os.path.join(output_dir, 'ps7-2-a-4.png')
-#                        },
-#                        num_particles=num_particles, sigma_exp=sigma_exp, sigma_dyn=sigma_dyn, alpha=alpha,
-#                        template_coords=template_rect)  # Add more if you need to
-#
-#
-#
-## rerun
-#video_filename = os.path.join(input_dir, "pres_debate.mp4")
-#video = cv2.VideoCapture(video_filename)
-#okay, frame = video.read()
-#
-#
-##template_rect = {'x': 540.8751, 'y': 390.1776, 'w': 60.5404, 'h': 90.0504}  # suggested template window (dict)
-##template_rect = {'x': 550.8751, 'y': 400.1776, 'w': 50.5404, 'h': 80.0504}  # suggested template window (dict)
-#template_rect = {'x': 555.8751, 'y': 400.1776, 'w': 40.5404, 'h': 80.0504}  # suggested template window (dict)
-#
-#template = frame[int(template_rect['y']):int(template_rect['y'] + template_rect['h']),
-#                                 int(template_rect['x']):int(template_rect['x'] + template_rect['w'])]
-#plt.imshow(template)
-
-#plt.imshow(frame)
-
 def part_1a():
     num_particles = 1000  # Define the number of particles
     sigma_exp = 10.  # Define the value of sigma for the measurement exponential equation
@@ -230,13 +149,7 @@ def part_2b():
     sigma_exp = 5.  # Define the value of sigma for the measurement exponential equation
     sigma_dyn = 40.  # Define the value of sigma for the particles movement (dynamics)
     alpha = 0.95  # Set a value for alpha
-#    template_rect = {'x': 550.8751, 'y': 400.1776, 'w': 50.5404, 'h': 80.0504}  # Define the template window values
     template_rect = {'x': 555.8751, 'y': 400.1776, 'w': 40.5404, 'h': 80.0504}  # suggested template window (dict)
-
-#num_particles = 5000  # Define the number of particles
-#sigma_exp = 10.  # Define the value of sigma for the measurement exponential equation
-#sigma_dyn = 30.  # Define the value of sigma for the particles movement (dynamics)
-#alpha = 0.90  # Set a value for alpha
 
     run_particle_filter(AppearanceModelPF,  # particle filter model class
                         os.path.join(input_dir, "noisy_debate.mp4"),  # input video
@@ -293,38 +206,6 @@ def part_3b():
                         template_coords=template_rect)  # Add more if you need to
 
 
-def part_4():
-    """Contains experiments using the code from part 1 and different parameters.
-
-    Please follow the problem set documentation. In order to make grading easier, copy the code from part 1a and modify
-    it to run your tests.
-
-    The results you observe in this part should help with your discussion answers.
-
-    Returns:
-        None
-    """
-    pass
-
-
-def part_5():
-    num_particles = 0  # Define the number of particles
-    sigma_md = 0  # Define the value of sigma for the measurement exponential equation
-    sigma_dyn = 0  # Define the value of sigma for the particles movement (dynamics)
-    template_rect = {'x': 0, 'y': 0, 'w': 0, 'h': 0}  # Define the template window values
-
-    run_particle_filter(MDParticleFilter,
-                        os.path.join(input_dir, "pedestrians.mp4"),
-                        template_rect,
-                        {
-                            'template': os.path.join(output_dir, 'ps7-5-a-1.png'),
-                            40: os.path.join(output_dir, 'ps7-5-a-2.png'),
-                            100: os.path.join(output_dir, 'ps7-5-a-3.png'),
-                            240: os.path.join(output_dir, 'ps7-5-a-4.png')
-                        },
-                        num_particles=num_particles, sigma_mse=sigma_md, sigma_dyn=sigma_dyn,
-                        template_coords=template_rect)  # Add more if you need to
-
 if __name__ == '__main__':
     part_1a()
     part_1b()
@@ -332,5 +213,3 @@ if __name__ == '__main__':
     part_2b()
     part_3a()
     part_3b()
-    part_4()
-    part_5()
