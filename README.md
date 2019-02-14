@@ -1,5 +1,5 @@
 # Motion Tracking with Partical Filter
-Using Kalman filter to track body movements in videos
+Using partical filter to track body movements in videos
 
 ## Head recognition in noisy video stream
 ![output](output/ps7-1-b-1.png)
