@@ -1,4 +1,4 @@
-# MotionTracking with Partical Filter
+# Motion Tracking with Partical Filter
 Using Kalman filter to track body movements in videos
 
 ## Head recognition in noisy video stream
